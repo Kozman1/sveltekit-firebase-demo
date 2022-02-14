@@ -1,4 +1,4 @@
-import adapter from 'svelte-adapter-firebase';
+import adapter from '@sveltejs/adapter-vercel": "next"';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
