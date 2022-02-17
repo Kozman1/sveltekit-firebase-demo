@@ -13,6 +13,7 @@
             <a href="/posts" class="footer__link" sveltekit:prefetch>All Posts</a>
             <a href="/chat" class="footer__link" sveltekit:prefetch>Chat With Other Users!</a>
         {/if}
+        <a href="/comparison" class="footer__link">Firebase vs Airtable</a>
         <Logout><div class="footer__link">Logout</div></Logout>
         
     </nav>
