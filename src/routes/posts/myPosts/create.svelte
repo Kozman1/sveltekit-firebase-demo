@@ -6,9 +6,13 @@
     import { fly } from 'svelte/transition';
     import { backInOut } from 'svelte/easing';
     import { goto } from "$app/navigation";
+    import { browser } from '$app/env';
     import { getFirestore, setDoc, collection, doc, serverTimestamp } from "firebase/firestore";
     import { user } from '/src/app/stores/user.js';
 
+    $: {
+        if(browser && !$user) goto('/');
+    }
 
     const db = getFirestore();
     let isUpdating = false;

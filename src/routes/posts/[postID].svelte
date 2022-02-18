@@ -35,11 +35,15 @@
 </script>
 
 <script>
-    import { onMount } from "svelte";
+    import { browser } from '$app/env';
+    import { goto } from '$app/navigation';
+    import { user } from '/src/app/stores/user.js';
 
     export let postData;
 
-
+    $: {
+        if(browser && !$user) goto('/');
+    }
 
     
 </script>

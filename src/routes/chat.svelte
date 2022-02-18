@@ -10,10 +10,15 @@
     import { backInOut } from 'svelte/easing';
     import { doc, getFirestore, limit, onSnapshot, orderBy, query, serverTimestamp, setDoc, collection, getDoc, addDoc } from "firebase/firestore";
     import { onDestroy, onMount } from "svelte";
+    import { goto } from '$app/navigation';
+    import { browser } from '$app/env';
     import { user } from '/src/app/stores/user.js';
     
     const db = getFirestore();
     
+    $: {
+        if(browser && !$user) goto('/');
+    }
 
     let unsubscribe = () => {},   
         messageText = '',

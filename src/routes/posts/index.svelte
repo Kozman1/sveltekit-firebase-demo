@@ -33,9 +33,15 @@
 
 <script>
     import PostCard from '$lib/postCard.svelte';
-import { getMultiFactorResolver } from "firebase/auth";
+    import { browser } from '$app/env';
+    import { goto } from '$app/navigation';
+    import { user } from '/src/app/stores/user.js';
 
     export let posts;
+
+    $: {
+        if(browser && !$user) goto('/');
+    }
 
     const authors = {};
     const db = getFirestore();

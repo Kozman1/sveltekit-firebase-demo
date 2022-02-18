@@ -39,9 +39,17 @@
 
 <script>
     import PostCard from '$lib/postCard.svelte';
+    import { user } from '/src/app/stores/user.js';
+    import { goto } from '$app/navigation';
+    import { browser } from "$app/env";
+    
 
     export let posts;
     // TODO: autogenerate id for posts
+
+    $: {
+        if(browser && !$user) goto('/');
+    }
 </script>
 
 <container>
