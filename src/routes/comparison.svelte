@@ -8,7 +8,8 @@
         firestoreTime,
         airtableTime,
         firestoreAvgTime = 0,
-        airtableAvgTime = 0;
+        airtableAvgTime = 0,
+        isUpdating = false;
 
     let firestoreRequests = [];
     let airtableRequests = [];
@@ -33,7 +34,8 @@
 
     const getFirestoreData = async () => {
         const startTime = performance.now();
-
+        isUpdating = true
+        
         const db = getFirestore();
         const docRef = doc(db, 'comparison', 'testData');
         let docSnap;
@@ -44,6 +46,7 @@
             }
         }
         catch(error) {
+            isUpdating = false;
             console.error(error);
             return;
         }
@@ -51,19 +54,23 @@
         firestoreData = docSnap.data();
         const endTime = performance.now();
         firestoreTime = Math.round(endTime - startTime);
+        isUpdating = false;
     }
 
     const getAirtableData = async () => {
         const startTime = performance.now();
+        isUpdating = true;
 
         try {
             let result = await (await fetch('https://kozman.api.stdlib.com/airtable-comparison-connector@dev/')).json();
             airtableData = result.fields;
         }
         catch(error) {
+            isUpdating = false;
             console.error(error.message);
+            return;
         }
-
+        isUpdating = false;
         const endTime = performance.now();
         airtableTime = Math.round(endTime - startTime);
     }
@@ -88,7 +95,13 @@
                 <div class="time">Request Time: {firestoreTime} ms</div>
                 <div class="time">Average Time: {firestoreAvgTime} ms</div>
             {/if}
-            <button on:click={getFirestoreData} class="button">Fetch From Firestore</button>
+            <button 
+                on:click={getFirestoreData} 
+                disabled={isUpdating}
+                class="button"
+            >
+                {isUpdating ? 'Updating...' : 'Fetch From Firestore'}
+            </button>
         </div>
         <div class="column">
             <h4>Airtable</h4>
@@ -101,14 +114,19 @@
                 <div class="time">Request Time: {airtableTime} ms</div>
                 <div class="time">Average Time: {airtableAvgTime} ms</div>
             {/if}
-            <button on:click={getAirtableData} class="button">Fetch From Airtable</button>
+            <button 
+                on:click={getAirtableData} 
+                disabled={isUpdating}
+                class="button"
+            >
+                {isUpdating ? 'Updating...' : 'Fetch From Airtable'}
+            </button>
         </div>
     </main>
 </container>
 
 
 <style>
-
     main {
         display: flex;
         
