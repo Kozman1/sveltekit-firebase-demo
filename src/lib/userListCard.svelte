@@ -10,7 +10,7 @@
             <div>Member since: {createdAt.toDate().toISOString().split('T')[0]}</div>
         </div>
         <div class="text-wrap">
-            <div>{description}</div>
+            <div>{description || ''}</div>
             <div class="cta-text">View Profile &#8594</div>
         </div>
     </div>
